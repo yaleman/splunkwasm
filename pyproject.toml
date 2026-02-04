@@ -1,10 +1,12 @@
 [project]
+
 name = "splunkwasm"
 version = "0.1.0"
 description = "Testing Splunk's Python for WASM compatibility"
 readme = "README.md"
 requires-python = "==3.13.4"
 dependencies = ["pywasm==2.2.2"]
+authors = [{ name = "James Hodgkinson", email = "james@terminaloutcomes.com" }]
 
 [dependency-groups]
 dev = [

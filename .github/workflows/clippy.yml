@@ -23,5 +23,7 @@ jobs:
         with:
           version: "v0.4.2"
       - name: "Run clippy (ignores errors, this is just a check)"
-        run: cargo clippy
+        run: |
+          rustup target install wasm32-unknown-unknown
+          cargo clippy --all-targets --all-features
         continue-on-error: true
