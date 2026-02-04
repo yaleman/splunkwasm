@@ -2,5 +2,11 @@
 name = "splunkwasm"
 version = "0.1.0"
 edition = "2024"
+readme = "README.md"
+description = "Testing that Splunk's Python can use pywasm to run WebAssembly modules"
+
+[lib]
+crate-type = ["cdylib"]
+test = false
 
 [dependencies]

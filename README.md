@@ -1,3 +1,35 @@
 # splunkwasm
 
-A test library to see if we can transpile Rust to WASM so Splunk's Python (3.12-ish?) can use [pywasm](https://github.com/libraries/pywasm) to load it and use it.
+A small Rust-to-WASM library that is loaded and executed by Splunk’s Python runtime via pywasm.
+
+## Prerequisites
+
+- [uv](https://github.com/astral-sh/uv) for Python dependencies and tooling.
+- [mise](https://mise.jdx.dev/) for task orchestration.
+- [rust](https://rust-lang.org)
+
+## Usage
+
+1. Start Splunk in Docker and wait for it to finish booting:
+
+   ```bash
+   scripts/start_splunk.sh
+   ```
+
+   This command tails container logs (`docker logs -f`) and will block your terminal.
+   Use a separate terminal or stop the log tail with `Ctrl+C` once Splunk is up.
+
+2. Build, package, and run inside the container:
+
+   ```bash
+   mise run_in_docker
+   ```
+
+   or
+
+   ```bash
+   uv run python scripts/package.py --clean
+   scripts/run_in_docker.sh
+   ```
+
+`mise run_in_docker` expects the container name `splunkwasm` from `scripts/start_splunk.sh` and will copy the local `package/` directory into `/home/ansible/` in the container before invoking `splunkwasm.__main__`.

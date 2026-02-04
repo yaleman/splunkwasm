@@ -1,0 +1,78 @@
+
+[env]
+# Use the project name derived from the current directory
+# MISE_DISABLE_TOOLS = 1
+PROJECT_NAME = "{{ config_root | basename }}"
+
+[settings]
+python.uv_venv_auto = "create|source"
+
+[tasks.check]
+description = "Run rust checks"
+depends = ['venv', 'fmt', 'clippy', 'lint', 'test']
+
+[tasks.fmt]
+description = "Check rust code formatting"
+run = '''
+# running cargo fmt --check then running it to just fix things
+cargo fmt --all --check || true
+cargo fmt --all
+'''
+
+[tasks.wasm_build]
+description = "Build the wasm library"
+run = '''
+cargo build --release --target wasm32-unknown-unknown
+cp target/wasm32-unknown-unknown/release/splunkwasm.wasm splunkwasm/splunkwasm.wasm
+'''
+
+[tasks.venv]
+description = "Create or update the python virtual environment"
+run = "uv sync --upgrade"
+
+[tasks.pytest]
+description = "Run python tests"
+depends = ['wasm_build']
+run = "pytest"
+
+[tasks.test]
+description = "Run all tests"
+depends = ['pytest']
+
+[tasks.lint]
+description = "Run all linters"
+depends = ['clippy', 'ruff', 'python_typing']
+
+[tasks.ruff]
+description = "Run ruff linter"
+run = '''
+ruff format
+ruff check .
+'''
+
+[tasks.python_typing]
+description = "Run Python type checker"
+run = '''
+ty check
+'''
+
+[tasks.clippy]
+description = "Run an aggressive clippy"
+run = "cargo clippy --all-targets --all-features --quiet"
+
+[tasks.semgrep]
+description = "Run semgrep"
+run = "just semgrep"
+
+[tasks.package]
+run = '''
+python --version
+python scripts/package.py --clean
+'''
+description = "Package the project for distribution"
+depends = ['check']
+
+[tasks.run_in_docker]
+depends = ['package']
+description = "Run the package inside the splunk python docker"
+run = "scripts/run_in_docker.sh"
