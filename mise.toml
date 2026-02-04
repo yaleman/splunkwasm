@@ -46,14 +46,14 @@ depends = ['clippy', 'ruff', 'python_typing']
 [tasks.ruff]
 description = "Run ruff linter"
 run = '''
-ruff format
-ruff check .
+uv run ruff format
+uv run ruff check .
 '''
 
 [tasks.python_typing]
 description = "Run Python type checker"
 run = '''
-ty check
+uv run ty check
 '''
 
 [tasks.clippy]
@@ -66,8 +66,8 @@ run = "just semgrep"
 
 [tasks.package]
 run = '''
-python --version
-python scripts/package.py --clean
+uv run python --version
+uv run python scripts/package.py --clean
 '''
 description = "Package the project for distribution"
 depends = ['check']
