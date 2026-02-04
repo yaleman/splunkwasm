@@ -32,8 +32,8 @@ run = "uv sync --upgrade"
 
 [tasks.pytest]
 description = "Run python tests"
-depends = ['wasm_build']
-run = "pytest"
+depends = ['venv', 'wasm_build']
+run = "uv run pytest"
 
 [tasks.test]
 description = "Run all tests"
@@ -45,6 +45,7 @@ depends = ['clippy', 'ruff', 'python_typing']
 
 [tasks.ruff]
 description = "Run ruff linter"
+depends = ['venv']
 run = '''
 uv run ruff format
 uv run ruff check .
@@ -52,6 +53,7 @@ uv run ruff check .
 
 [tasks.python_typing]
 description = "Run Python type checker"
+depends = ['venv']
 run = '''
 uv run ty check
 '''
@@ -60,17 +62,13 @@ uv run ty check
 description = "Run an aggressive clippy"
 run = "cargo clippy --all-targets --all-features --quiet"
 
-[tasks.semgrep]
-description = "Run semgrep"
-run = "just semgrep"
-
 [tasks.package]
 run = '''
 uv run python --version
 uv run python scripts/package.py --clean
 '''
 description = "Package the project for distribution"
-depends = ['check']
+depends = ['venv', 'check']
 
 [tasks.run_in_docker]
 depends = ['package']
