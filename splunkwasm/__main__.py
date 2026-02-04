@@ -20,6 +20,8 @@ def main():
     print(f"The sum of {a} and {b} is: {sum_result}")
     print(f"The product of {a} and {b} is: {product_result}")
 
+    print("Success!")
+
 
 if __name__ == "__main__":
     main()

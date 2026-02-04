@@ -16,9 +16,6 @@ A small Rust-to-WASM library that is loaded and executed by Splunk’s Python ru
    scripts/start_splunk.sh
    ```
 
-   This command tails container logs (`docker logs -f`) and will block your terminal.
-   Use a separate terminal or stop the log tail with `Ctrl+C` once Splunk is up.
-
 2. Build, package, and run inside the container:
 
    ```bash

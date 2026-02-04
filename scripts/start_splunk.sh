@@ -1,5 +1,5 @@
 #!/bin/bash
-docker run --rm -it \
+docker run --rm \
     --name splunkwasm \
     -e SPLUNK_GENERAL_TERMS=--accept-sgt-current-at-splunk-com \
     -e SPLUNK_START_ARGS=--accept-license \
@@ -10,4 +10,17 @@ docker run --rm -it \
     --platform linux/amd64 \
     -d \
     splunk/splunk:latest
-docker logs -f splunkwasm
+
+if [ "$*" == "--wait" ]; then
+    while true; do
+        # run curl against splunk's web port
+        STATUS_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8000)
+        if [ "$STATUS_CODE" -lt 400 ]; then
+            break
+        fi
+        echo "Waiting for Splunk to start..."
+        sleep 5
+    done
+    echo "Splunk should be started now."
+fi
+
