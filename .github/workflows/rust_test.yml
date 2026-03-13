@@ -24,6 +24,6 @@ jobs:
           toolchain: stable
           targets: wasm32-unknown-unknown
       - name: Install mise
-        uses: jdx/mise-action@v3
+        uses: jdx/mise-action@v4
       - name: "Build the WASM module"
         run: mise wasm_build

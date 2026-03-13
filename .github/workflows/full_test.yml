@@ -39,6 +39,6 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
       - name: Install mise
-        uses: jdx/mise-action@v3
+        uses: jdx/mise-action@v4
       - name: Run full test
         run: scripts/full_test.sh
